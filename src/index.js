@@ -42,22 +42,15 @@ function decode(expr) {
     // split expr into 10 bits pieces
     arr = expr.match(/.{1,10}/g);
 
-    // delete zeros 
+    
     arr.forEach(function(item, index){
-        this[index] = item.replace(/^0+/, "");
+        this[index] = item
+          .replace(/^0+/, "") // delete zeros 
+          .replace(/\*+/, "") // replace asterisks with spaces
+          .replace(/10/g, ".") // replace 10s with dots and 11s with dashes
+          .replace(/11/g, "-");
     }, arr);
-      
-    // replace asterisks with spaces
-    arr.forEach(function(item, index){
-        this[index] = item.replace(/\*+/, " ");
-    }, arr);
-     
-    // replace 10s with dots and 11s with dashes
-    arr.forEach(function(item, index){
-        this[index] = item.replace(/10/g, ".").replace(/11/g, "-");
-    }, arr);
-
-
+    
     // decode 
     arr.forEach(function(item, index){
         this[index] = MORSE_TABLE[arr[index]] || " "; // put space if no letters found in MORSE_TABLE;
